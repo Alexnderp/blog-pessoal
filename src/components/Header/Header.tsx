@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import ResponseModel from "../../models/ResponseModel";
 import { AuthContext } from "../../contexts/AuthContext";
 import { ThreeDots } from "react-loader-spinner";
-import Register from "../../pages/Register/Register";
+import { toastAlert } from "../../Utils/toastAlert";
 
 function Header() {
   let navigate = useNavigate();
@@ -13,7 +13,7 @@ function Header() {
     {} as ResponseModel
   );
 
-  const { user, handleLogin } = useContext(AuthContext);
+  const { user, handleLogin, handleLogout } = useContext(AuthContext);
 
   const token = user.token;
 
@@ -37,7 +37,10 @@ function Header() {
     handleLogin(userLogin);
   }
 
-  console.log(userLogin);
+  function logout() {
+    handleLogout();
+    toastAlert("Usuario deslogado com sucesso", "info");
+  }
 
   const [open, setOpen] = useState(false);
   return (
@@ -72,7 +75,12 @@ function Header() {
             <p className="text-white text-md p-1">
               Ainda não possui conta?
               <Link to={"/register"}>
-                <span className="text-lime-400 text-lg hover:text-white cursor-pointer ml-1">
+                <span
+                  className="text-lime-400 text-lg hover:text-white cursor-pointer ml-1"
+                  onClick={() => {
+                    setOpen(false);
+                  }}
+                >
                   Cadastre-se
                 </span>
               </Link>
@@ -80,6 +88,9 @@ function Header() {
             <button
               type="submit"
               className="text-xl bg-lime-400 w-[4rem] h-[2rem] rounded-lg mt-3 mx-[7rem] font-Gilroy-Black text-white hover:bg-gray-50 hover:text-lime-400"
+              onClick={() => {
+                isLoading ? setOpen(true) : setOpen(false);
+              }}
             >
               {isLoading ? (
                 <ThreeDots
@@ -113,7 +124,12 @@ function Header() {
               <Link to={"/"}> Login</Link>
             </button>
           ) : (
-            "Logout"
+            <button
+              className="h-[9.2vh] w-[6vw] absolute right-4 rounded-lg text-center text-lime-500 text-[1.4em] font-Gilroy-Black border-2 border-lime-500 duration-300 hover:border-white hover:text-white"
+              onClick={logout}
+            >
+              Logout
+            </button>
           )}
         </div>
       </header>

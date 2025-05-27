@@ -1,11 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react'
-import Post from '../../models/Post';
-import { useNavigate, useParams } from 'react-router-dom';
-import { AuthContext } from '../../contexts/AuthContext';
-import { apiDelete, apiSearchGet } from '../../Services/Service';
+import React, { useContext, useEffect, useState } from "react";
+import Post from "../../models/Post";
+import { useNavigate, useParams } from "react-router-dom";
+import { AuthContext } from "../../contexts/AuthContext";
+import { apiDelete, apiSearchGet } from "../../Services/Service";
+import { toastAlert } from "../../Utils/toastAlert";
 
 function DeletePost() {
-  
   const [post, setPost] = useState<Post>({} as Post);
 
   const navigate = useNavigate();
@@ -24,7 +24,7 @@ function DeletePost() {
       });
     } catch (e: any) {
       if (e.toString().includes(403)) {
-        alert("Sessão expirada, efutue login novamente");
+        toastAlert("Sessão expirada, efutue login novamente", "info");
         handleLogout();
       }
     }
@@ -43,9 +43,9 @@ function DeletePost() {
   async function deletePost() {
     try {
       await apiDelete(`/post/${id}`, { headers: { Authorization: token } });
-      alert("Post deletado com sucesso");
+      toastAlert("Post deletado com sucesso", "sucess");
     } catch (e: any) {
-      alert("Erro ao deletar post");
+      toastAlert('Erro ao deletar post', 'error')
     }
 
     back();
@@ -53,7 +53,9 @@ function DeletePost() {
 
   return (
     <section className="p-10 flex flex-col justify-center items-center">
-        <h2 className="text-2xl text-lime-400 font-Gilroy-Black m-10">Deseja deletar este post?</h2>
+      <h2 className="text-2xl text-lime-400 font-Gilroy-Black m-10">
+        Deseja deletar este post?
+      </h2>
       <div className="w-[20vw] relative group overflow-hidden p-8 rounded-xl bg-gray-800  dark:bg-gray-900">
         <div
           aria-hidden="true"
@@ -68,13 +70,22 @@ function DeletePost() {
               {post.title}
             </p>
           </div>
-          <button className="m-3 text-center text-white bg-red-600 h-[3rem] w-[5rem] rounded-lg font-Gilroy-Black" onClick={back}>Não</button>
-          <button className="m-3 text-center text-white bg-lime-400 h-[3rem] w-[5rem] rounded-lg font-Gilroy-Black" onClick={deletePost}>Sim</button>
+          <button
+            className="m-3 text-center text-white bg-red-600 h-[3rem] w-[5rem] rounded-lg font-Gilroy-Black"
+            onClick={back}
+          >
+            Não
+          </button>
+          <button
+            className="m-3 text-center text-white bg-lime-400 h-[3rem] w-[5rem] rounded-lg font-Gilroy-Black"
+            onClick={deletePost}
+          >
+            Sim
+          </button>
         </div>
       </div>
     </section>
   );
-  
 }
 
-export default DeletePost
+export default DeletePost;

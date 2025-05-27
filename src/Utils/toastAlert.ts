@@ -4,7 +4,7 @@ export function toastAlert(mensagem: string, type: string) {
   switch (type) {
     case "sucess":
       toast.success(mensagem, {
-        position: "top-right",
+        position: "top-center",
         autoClose: 2000,
         hideProgressBar: false,
         closeOnClick: true,
@@ -32,7 +32,7 @@ export function toastAlert(mensagem: string, type: string) {
 
     case "error":
       toast.error(mensagem, {
-        position: "top-right",
+        position: "top-center",
         autoClose: 2000,
         hideProgressBar: false,
         closeOnClick: true,

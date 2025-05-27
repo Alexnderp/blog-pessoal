@@ -14,7 +14,7 @@ import DeletePost from "./components/DeletePost/DeletePost";
 import PostList from "./components/PostList/PostList";
 import CardProfile from "./components/CardProfile/CardProfile";
 import { ToastContainer } from "react-toastify";
-import 'react-toastify/ReactToastify.css'
+import "react-toastify/ReactToastify.css";
 
 function App() {
   return (
@@ -27,7 +27,7 @@ function App() {
             <Nav />
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/" element={<Login />} />
+              {/* <Route path="/" element={<Login />} /> */}
               <Route path="/home" element={<Home />} />
               <Route path="/register" element={<Register />} />
               <Route path="/themes" element={<ThemesList />} />

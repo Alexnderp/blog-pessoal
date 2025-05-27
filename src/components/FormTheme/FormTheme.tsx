@@ -3,6 +3,7 @@ import Theme from "../../models/Theme";
 import { useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import { apiPost, apiSearchGet, apiUpdate } from "../../Services/Service";
+import { toastAlert } from "../../Utils/toastAlert";
 
 function FormTheme() {
   const [theme, setTheme] = useState<Theme>({} as Theme);
@@ -23,7 +24,7 @@ function FormTheme() {
       });
     } catch (e: any) {
       if (e.toString().includes(403)) {
-        alert("Sessão expirada, efutue login novamente");
+        toastAlert("Sessão expirada, efutue login novamente", "info");
         handleLogout();
       }
     }
@@ -52,10 +53,10 @@ function FormTheme() {
           headers: { Authorization: token },
         });
 
-        alert("Tema atualizado com sucesso!");
+        toastAlert("Tema atualizado com sucesso", "sucess");
       } catch (e: any) {
         if (e.toString().includes(403)) {
-          alert("Sessão expirada, efutue login novamente");
+          toastAlert("Sessão expirada, efutue login novamente", "info");
           handleLogout();
         }
       }
@@ -64,13 +65,13 @@ function FormTheme() {
         await apiPost(`/themes`, theme, setTheme, {
           headers: { Authorization: token },
         });
-        alert("Tema cadastrado");
+        toastAlert("Tema cadastrado", "sucess");
       } catch (e: any) {
         if (e.toString().includes(403)) {
-          alert("Sessão expirada, efutue login novamente");
+          toastAlert("Sessão expirada, efutue login novamente", "info");
           handleLogout();
         } else {
-          alert("Erro ao cadastrar o tema");
+          toastAlert("Erro ao cadastrar tema", "error");
         }
       }
     }

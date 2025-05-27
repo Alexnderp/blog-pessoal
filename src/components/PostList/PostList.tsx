@@ -15,14 +15,6 @@ function PostList() {
   const { user, handleLogout } = useContext(AuthContext);
   const token = user.token;
 
-
-  useEffect(() => {
-    if (token === "") {
-      toastAlert('Favor, efetuar o login', 'info')
-      navigate("/");
-    }
-  }, [token]);
-
   async function searchPost() {
     try {
       await apiSearchGet("/posts", setPost, {
@@ -32,7 +24,7 @@ function PostList() {
       });
     } catch (e: any) {
       if (e.toString().includes("403")) {
-        alert("Sessão expirada, efutue login novamente");
+        toastAlert("Sessão expirada, efutue login novamente", "info");
         handleLogout();
       }
     }
@@ -46,10 +38,9 @@ function PostList() {
       <div className="flex items-center justify-center">
         {post.length === 0 && <MutatingDots />}
       </div>
-      <div className="container mx-auto py-4 grid md:grid-cols-2 lg:grid-cols-3">
-        {post.map((post)=>(
-
-        <CardPost key={post.id} post={post} />
+      <div className="flex items-center justify-center ">
+        {post.map((post) => (
+          <CardPost key={post.id} post={post} />
         ))}
       </div>
     </>

@@ -34,9 +34,21 @@ function Register() {
     navigate("/");
   }
 
-  const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
-    setUser({ ...user, photo: e.target.files[0] });
-  };
+  function handleFileChange(e: ChangeEvent<HTMLInputElement>) {
+    if (!e.target.files) {
+      return;
+    } else {
+      const sizeFile = e.target.files[0].size;
+      const sizeAllowed = 20971520;
+
+      if (sizeFile <= sizeAllowed) {
+        setUser({ ...user, photo: e.target.files[0] });
+      } else {
+        alert("Tamanho da Imagem é superior a 20Mb");
+        e.target.value = "";
+      }
+    }
+  }
 
   function handleConfirmPassword(e: ChangeEvent<HTMLInputElement>) {
     setConfirmPassword(e.target.value);
@@ -60,7 +72,13 @@ function Register() {
 
     if (confirmPassword === user.password && user.password.length >= 8) {
       try {
-        await apiPostAuth(`/auth/register`, user, setUserResponse);
+        const userData = {
+          name: user.name,
+          email: user.email,
+          password: user.password,
+          photo: user.photo,
+        };
+        await apiPostAuth(`/auth/register`, formData, setUserResponse);
         alert("Usuario cadastrado com sucesso");
       } catch (error) {
         alert("Erro ao efetuar o cadastro");
@@ -81,6 +99,8 @@ function Register() {
           className="h-[80vh]"
         />
         <form
+          action="/upload"
+          method="POST"
           encType="multipart/form-data"
           className="flex flex-col justify-center bg-gray-600 p-3 rounded-lg w-[25rem] h-[32rem] shadow-[-11px_-10px_20px_10px_#00000024]"
           onSubmit={registerNewUser}
@@ -145,7 +165,7 @@ function Register() {
             name="photo"
             type="file"
             accept="image/jpeg, image/png"
-            onChange={handleImageChange}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => handleFileChange(e)}
             className="rounded-lg m-2  text-gray-600 text-sm font-semibold bg-white"
           />
           <button

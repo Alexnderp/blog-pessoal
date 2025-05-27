@@ -9,8 +9,20 @@ export const apiPostAuth = async (
   data: Object,
   setData: Function
 ) => {
-  const response = await api.post(url, data);
+  const response = await api.post(url, data, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
   setData(response.data);
+};
+
+export const apiPostLogin = async (
+  url: string,
+  data: Object,
+  setData: Function
+) => {
+  const response = await api.post(url, data, {});
+  setData(response.data);
+  console.log(response.data);
 };
 
 export const apiSearchGet = async (
@@ -44,4 +56,15 @@ export const apiUpdate = async (
 
 export const apiDelete = async (url: string, header: Object) => {
   await api.delete(url, header);
+};
+
+export const generatePostWithIA = async (
+  url: string,
+  data: Object,
+  header: Object
+) => {
+  console.log(data);
+
+  const response = await api.post(url, data, header);
+  return response;
 };

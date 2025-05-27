@@ -1,6 +1,7 @@
 import { createContext, ReactNode, useState } from "react";
 import ResponseModel from "../models/ResponseModel";
-import { apiPostAuth } from "../Services/Service";
+import { apiPostLogin } from "../Services/Service";
+import { toastAlert } from "../Utils/toastAlert";
 
 interface AuthContextProps {
   user: ResponseModel;
@@ -30,12 +31,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
   async function handleLogin(userLogin: ResponseModel) {
     setIsLoading(true);
     try {
-      await apiPostAuth(`/auth/login`, userLogin, setUser);
-      alert("Usuário logado com sucesso!");
-      setIsLoading(false);
+      await apiPostLogin(`/auth/login`, userLogin, setUser);
+
+      toastAlert("Login efetuado com sucesso", "sucess");
     } catch (e) {
       console.log(e);
-      alert("Email e/ou senha incorretos");
+      toastAlert("Email e/ou senha incorretos", "error");
+    } finally {
       setIsLoading(false);
     }
   }
